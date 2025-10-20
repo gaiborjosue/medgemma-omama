@@ -1,0 +1,206 @@
+==============================================
+🔬 LoRA Adapter Architecture Visualizer
+==============================================
+Job ID: 636815
+Node: chimera21
+GPUs: 0
+Start time: Sun Oct 19 10:14:38 PM EDT 2025
+==============================================
+
+GPU Information:
+NVIDIA H200, 143771 MiB
+
+
+================================================================================
+ LoRA ADAPTER ARCHITECTURE VISUALIZER
+================================================================================
+
+Loading base model...
+✓ Loaded
+
+================================================================================
+ BASE MODEL STRUCTURE
+================================================================================
+
+📊 Total Parameters: 4.30B (4,300,079,472)
+💾 Approximate Size: 8.01 GB (bfloat16)
+
+🔒 Status: All parameters are FROZEN during LoRA training
+   → Original capabilities preserved!
+
+📋 Sample Layer Names:
+   model.vision_tower.vision_model.embeddings.patch_embedding.weight: torch.Size([1152, 3, 14, 14])
+   model.vision_tower.vision_model.embeddings.patch_embedding.bias: torch.Size([1152])
+   model.vision_tower.vision_model.embeddings.position_embedding.weight: torch.Size([4096, 1152])
+   model.vision_tower.vision_model.encoder.layers.0.layer_norm1.weight: torch.Size([1152])
+   model.vision_tower.vision_model.encoder.layers.0.layer_norm1.bias: torch.Size([1152])
+   model.vision_tower.vision_model.encoder.layers.0.self_attn.k_proj.weight: torch.Size([1152, 1152])
+   model.vision_tower.vision_model.encoder.layers.0.self_attn.k_proj.bias: torch.Size([1152])
+   model.vision_tower.vision_model.encoder.layers.0.self_attn.v_proj.weight: torch.Size([1152, 1152])
+   model.vision_tower.vision_model.encoder.layers.0.self_attn.v_proj.bias: torch.Size([1152])
+   model.vision_tower.vision_model.encoder.layers.0.self_attn.q_proj.weight: torch.Size([1152, 1152])
+   ... (883 total layers)
+
+================================================================================
+ LOADING LORA ADAPTER
+================================================================================
+
+Adapter Path: /hpcstor6/scratch01/e/edward.gaibor001/medgemma_runs/omama256_balanced
+Loading adapter on top of base model...
+
+✓ Adapter loaded
+
+================================================================================
+ ADAPTER STRUCTURE
+================================================================================
+
+📊 Total Parameters: 5.68B (5,681,082,224)
+🎯 Trainable (LoRA): 1.34B (1,342,504,960)
+🔒 Frozen (Base):    4.34B
+
+💡 Adapter Size: Only 31.220% of base model!
+💾 Adapter Storage: ~2560.6 MB
+
+📋 Adapter Layers Added:
+
+   Found 0 LoRA adapter layers:
+
+
+================================================================================
+ HOW LORA WORKS - THE MATH
+================================================================================
+
+Original Layer (Frozen):
+   output = W × input
+   where W is a large weight matrix (e.g., 4096 × 4096 = 16.7M parameters)
+
+LoRA Adapter (Trainable):
+   output = W × input + (B × A) × input
+                        └─────┬─────┘
+                          LoRA adapter
+   where:
+   • A is a small matrix: 4096 × r (r = rank, typically 8-64)
+   • B is a small matrix: r × 4096
+   • B × A approximates the weight update
+
+Example with rank=16:
+   Original W: 4096 × 4096 = 16,777,216 parameters
+   LoRA (A+B): (4096×16) + (16×4096) = 131,072 parameters
+   Reduction: 99.2% fewer parameters! 🎉
+
+Why This Works:
+   • Most weight updates are "low-rank" (can be approximated by smaller matrices)
+   • We only train A and B, keeping W frozen
+   • At inference: output = W × input + α × (B × A) × input
+     where α is a scaling factor (lora_alpha / lora_rank)
+
+================================================================================
+ ADAPTER CONFIGURATION
+================================================================================
+
+Your LoRA config (from training):
+
+   • Rank (r): 16
+   • Alpha: 16
+   • Dropout: 0.05
+   • Target modules: all-linear
+   • Task type: CAUSAL_LM
+   • Modules saved: lm_head, embed_tokens
+
+
+💡 What this means:
+   • Rank 16 = good balance of capacity vs. efficiency
+   • Alpha 16 = scaling factor for adapter contribution
+   • All-linear = applies LoRA to all linear layers
+   • lm_head/embed_tokens also fine-tuned for classification
+
+================================================================================
+ MEMORY EFFICIENCY COMPARISON
+================================================================================
+
+❌ Fine-tuning entire model:
+   • All 4.30B parameters trainable
+   • Optimizer states: 3× model size = 24.0 GB
+   • Gradients: 1× model size = 8.0 GB
+   • Total GPU memory: ~32.0 GB
+
+✅ LoRA fine-tuning:
+   • Only 1.34B parameters trainable
+   • Optimizer states: 3× adapter = 7.50 GB
+   • Gradients: 1× adapter = 2.50 GB
+   • Total GPU memory: ~18.0 GB
+   • Savings: ~43.8%
+
+================================================================================
+ DEPLOYMENT SCENARIOS
+================================================================================
+
+🏥 Scenario 1: Single Task
+   • Base model: 8 GB
+   • 1 Adapter: 10 MB
+   • Total: ~8 GB
+
+🏥 Scenario 2: Multiple Tasks (Your Use Case!)
+   • Base model: 8 GB
+   • Classification adapter: 10 MB
+   • Explanation adapter: 10 MB
+   • Report generation adapter: 10 MB
+   • Total: ~8.03 GB
+
+   Compare to fine-tuning 3 separate models: 24 GB!
+   💾 Space savings: 66%
+
+================================================================================
+ SWITCHING BETWEEN MODES
+================================================================================
+
+# Load base model once
+base = AutoModelForImageTextToText.from_pretrained("medgemma-4b-it")
+
+# Mode 1: Classification
+classifier = PeftModel.from_pretrained(base, "classification_adapter")
+output = classifier.generate(...)  # "B: Cancer"
+classifier.unload()  # Remove adapter
+
+# Mode 2: Conversational (base model restored)
+output = base.generate(...)  # Detailed explanation
+
+# Mode 3: Load different adapter
+explainer = PeftModel.from_pretrained(base, "explanation_adapter")
+output = explainer.generate(...)  # Structured findings
+explainer.unload()
+
+⚡ Fast switching: Only loading/unloading ~10MB adapter!
+
+================================================================================
+ SUMMARY
+================================================================================
+
+✨ Your LoRA Adapter Stats:
+   • Base model size: 4.30B parameters
+   • Adapter size: 1.34B parameters
+   • Ratio: 31.220%
+   • Training time: ~31.2% of full fine-tuning
+   • Storage: Only 2560.6 MB per adapter
+
+🎯 Key Benefits:
+   1. Preserves base model capabilities (conversational)
+   2. Adds specialized knowledge (classification)
+   3. Memory efficient (99% smaller than full model)
+   4. Fast training (only updates 31.2% of parameters)
+   5. Modular (train multiple adapters for different tasks)
+
+💡 Your Hierarchy:
+   Base Model (Conversational) ← 4B params
+        ↓
+   + Classification Adapter ← 1.34B params
+        ↓
+   = Specialized Classifier that can still access base knowledge!
+
+================================================================================
+
+
+==============================================
+✅ Visualization Complete!
+End time: Sun Oct 19 10:15:03 PM EDT 2025
+==============================================

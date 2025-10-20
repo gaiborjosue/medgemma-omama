@@ -1,0 +1,167 @@
+==============================================
+🎯 LoRA Adapter Hierarchy Demo
+==============================================
+Job ID: 636813
+Node: chimera21
+GPUs: 0
+Start time: Sun Oct 19 09:54:38 PM EDT 2025
+==============================================
+
+This demo shows:
+  1. Base model conversational capabilities
+  2. Adapter classification capabilities
+  3. Hierarchical decision-making
+==============================================
+
+GPU Information:
+NVIDIA H200, 143771 MiB
+
+Running hierarchical adapter demo...
+
+
+======================================================================
+🚀 HIERARCHICAL LORA ADAPTER DEMO
+======================================================================
+
+📦 Loading base MedGemma model...
+✓ Base model loaded
+
+📦 Loading classification adapter...
+✓ Adapter loaded from: /hpcstor6/scratch01/e/edward.gaibor001/medgemma_runs/omama256_balanced
+
+📊 Loading test data...
+✓ Loaded 2 test samples (1 Cancer, 1 NonCancer)
+
+======================================================================
+🎯 HIERARCHICAL INFERENCE DEMO
+======================================================================
+
+This demo shows a TRUE hierarchical pipeline:
+  1. LoRA adapter classifies the image (fast, specialized)
+  2. Classification result guides base model's explanation
+  3. Base model provides context-aware reasoning
+
+Key insight: The adapter's classification INFORMS the base model!
+======================================================================
+
+💾 Saving test images to: logs/636813_data
+   ✓ Saved: sample_1_cancer.png
+
+──────────────────────────────────────────────────────────────────────
+📋 SAMPLE 1/2
+──────────────────────────────────────────────────────────────────────
+Ground Truth: Cancer
+
+🎯 STEP 1: Quick Triage Classification (LoRA Adapter)
+----------------------------------------------------------------------
+🔄 Using specialized classification adapter...
+🔬 Classifier Output: B: Cancer
+📊 Classification: Cancer
+✓ Ground Truth: Cancer
+✅ CORRECT!
+
+
+💬 STEP 2: Detailed Explanation (Base Model with Classification Context)
+----------------------------------------------------------------------
+🔄 Disabling adapter - using base model reasoning...
+
+📝 Prompt: This mammogram has been classified as showing cancer. Please describe the visual findings that support this diagnosis. Focus on specific features such as masses, their characteristics (shape, margin, density), calcifications, architectural distortions, or asymmetries that are concerning for malignancy.
+
+🤖 Base Model Explanation:
+Based on the image you sent, here are some visual findings that could potentially suggest cancerous changes:
+
+*   **Mass:** There appears to be a noticeable mass in the upper outer quadrant of the left breast. The mass is located in the upper outer quadrant of the left breast.
+
+*   **Shape:** The mass has an irregular shape, which can be a sign of cancer.
+
+*   **Margin:** The margin of the mass is not well-defined, which can also raise suspicion.
+
+*   **Density:** The mass appears to have a relatively dense texture.
+
+*   **Calcifications:** There are calcifications present within the mass. These are abnormal calcium deposits, which can sometimes be associated with cancer.
+
+Based on these findings, a radiologist would need to further evaluate the mammogram and potentially perform additional imaging (such as ultrasound or biopsy) to confirm the diagnosis.
+
+
+🏥 STEP 3: Clinical Decision & Recommendations
+----------------------------------------------------------------------
+⚠️  HIGH RISK CASE
+📊 Classification Result: CANCER detected by specialized adapter
+🔍 Detailed Analysis: See base model explanation above
+
+📋 RECOMMENDED ACTIONS:
+   • Immediate referral to breast imaging specialist
+   • Schedule diagnostic mammogram and ultrasound
+   • Consider biopsy based on radiologist assessment
+   • Patient counseling and follow-up within 1 week
+
+──────────────────────────────────────────────────────────────────────
+   ✓ Saved: sample_2_noncancer.png
+
+──────────────────────────────────────────────────────────────────────
+📋 SAMPLE 2/2
+──────────────────────────────────────────────────────────────────────
+Ground Truth: NonCancer
+
+🎯 STEP 1: Quick Triage Classification (LoRA Adapter)
+----------------------------------------------------------------------
+🔄 Using specialized classification adapter...
+🔬 Classifier Output: A: NonCancer
+📊 Classification: NonCancer
+✓ Ground Truth: NonCancer
+✅ CORRECT!
+
+
+💬 STEP 2: Detailed Explanation (Base Model with Classification Context)
+----------------------------------------------------------------------
+🔄 Disabling adapter - using base model reasoning...
+
+📝 Prompt: This mammogram has been classified as showing no signs of cancer. Please describe the breast tissue characteristics and explain why this mammogram appears normal or benign. Discuss the tissue density, symmetry, and absence of suspicious features.
+
+🤖 Base Model Explanation:
+Okay, let's break down the characteristics of this mammogram and why it's likely considered normal.
+
+**Tissue Density:**
+
+*   **Overall:** The breast tissue appears to have a relatively homogenous density. This means it's fairly uniform in appearance across most of the image.
+*   **No Dominant Masses:** There are no obvious, large, dense masses or lumps that would immediately raise suspicion.
+*   **No Pleural Ejection:** The breast tissue doesn't appear to be pushed outwards away from the chest wall (pleural ejection).
+
+**Symmetry:**
+
+*   **Balanced Appearance:** The left and right breasts appear relatively symmetrical in terms of their overall density and shape. There isn't a significant difference in the way the tissue is arranged between the two sides.
+
+**Absence of Suspicious Features:**
+
+*   **No Microcalcifications:** There are no clusters of tiny calcium deposits (microcalcifications) that are often associated with
+
+
+🏥 STEP 3: Clinical Decision & Recommendations
+----------------------------------------------------------------------
+✓ LOW RISK CASE
+📊 Classification Result: NO CANCER detected by specialized adapter
+🔍 Detailed Analysis: See base model explanation above
+
+📋 RECOMMENDED ACTIONS:
+   • Continue routine screening schedule
+   • Next mammogram in 12 months
+   • Patient education on breast self-examination
+   • Monitor for any symptom changes
+
+──────────────────────────────────────────────────────────────────────
+
+==============================================
+✅ Demo Complete!
+End time: Sun Oct 19 09:55:23 PM EDT 2025
+==============================================
+
+📋 Key Findings:
+  • Base model: Conversational + detailed analysis
+  • With adapter: Precise classification
+  • Hierarchy: Best of both worlds!
+
+📚 Learn More:
+  • Read: /home/edward.gaibor001/medgemmaOMAMA/beta/hierarchy/README.md
+  • Quick test: python quick_comparison.py
+  • Visualize: python visualize_adapter.py
+==============================================

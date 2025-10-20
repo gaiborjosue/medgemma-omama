@@ -1,0 +1,64 @@
+==============================================
+Step 2: Process Balanced Dataset
+==============================================
+Job ID: 636190
+Node: chimera12
+Start time: Fri 17 Oct 2025 05:21:28 PM EDT
+==============================================
+============================================================
+Loading BALANCED dataset
+============================================================
+Loaded: DatasetDict({
+    train: Dataset({
+        features: ['image', 'label', 'filename'],
+        num_rows: 11760
+    })
+    validation: Dataset({
+        features: ['image', 'label', 'filename'],
+        num_rows: 2942
+    })
+})
+
+Detected classes: ['NonCancer', 'Cancer']
+
+Train distribution:
+  NonCancer: 5,880 (50.0%)
+  Cancer: 5,880 (50.0%)
+
+Validation distribution:
+  NonCancer: 1,471 (50.0%)
+  Cancer: 1,471 (50.0%)
+
+Prompt format:
+------------------------------------------------------------
+Classify this mammogram.
+A: NonCancer
+B: Cancer
+------------------------------------------------------------
+
+Sample message format:
+[{'content': [{'text': None, 'type': 'image'}, {'text': 'Classify this mammogram.\nA: NonCancer\nB: Cancer', 'type': 'text'}], 'role': 'user'}, {'content': [{'text': 'A: NonCancer', 'type': 'text'}], 'role': 'assistant'}]
+
+============================================================
+✅ Saved formatted BALANCED dataset to:
+   /hpcstor6/scratch01/e/edward.gaibor001/omamadata256/hf_proc_messages_balanced
+============================================================
+
+📊 Summary:
+  Train: 11,760 samples (balanced 50/50)
+  Val:   2,942 samples (balanced 50/50)
+
+💡 Next step:
+  Update 4-modelH.py to use:
+  DATA_DIR = '/hpcstor6/scratch01/e/edward.gaibor001/omamadata256/hf_proc_messages_balanced'
+============================================================
+
+
+==============================================
+✅ Step 2 Complete
+End time: Fri 17 Oct 2025 05:21:33 PM EDT
+==============================================
+
+📋 Next step:
+  sbatch run/3-train-balanced.slurm
+==============================================

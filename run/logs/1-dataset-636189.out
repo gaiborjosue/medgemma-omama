@@ -1,0 +1,95 @@
+==============================================
+Step 1: Create Balanced Dataset (50/50)
+==============================================
+Job ID: 636189
+Node: chimera12
+Start time: Fri 17 Oct 2025 05:16:22 PM EDT
+==============================================
+============================================================
+STEP 1: Loading and normalizing labels
+============================================================
+Found 163568 npz files
+Built 161589 labeled records
+  Missing metadata: 0
+  Dropped unknown/invalid: 1979
+
+Original class distribution:
+  NonCancer: 154,238 (95.5%)
+  Cancer:    7,351 (4.5%)
+  Imbalance ratio: 21.0:1
+
+============================================================
+STEP 2: Balancing classes (undersampling NonCancer)
+============================================================
+Target: 50/50 balance
+  Cancer samples:    7,351
+  NonCancer (before): 154,238
+  NonCancer (after):  7,351
+  Removed: 146,887 NonCancer samples
+
+Balanced dataset:
+  Total: 14,702 samples
+  NonCancer: 7,351 (50.0%)
+  Cancer:    7,351 (50.0%)
+  Ratio: 1.00:1 ✅
+
+============================================================
+STEP 3: Creating stratified train/val split
+============================================================
+Train split: 11,760 samples
+  NonCancer: 5,880 (50.0%)
+  Cancer:    5,880 (50.0%)
+
+Validation split: 2,942 samples
+  NonCancer: 1,471 (50.0%)
+  Cancer:    1,471 (50.0%)
+
+============================================================
+STEP 4: Building HuggingFace Dataset
+============================================================
+  Loading 11760 images...
+  Loading 2942 images...
+
+DatasetDict({
+    train: Dataset({
+        features: ['image', 'label', 'filename'],
+        num_rows: 11760
+    })
+    validation: Dataset({
+        features: ['image', 'label', 'filename'],
+        num_rows: 2942
+    })
+})
+
+Sample: 109063313287414526877337493512622927711.npz
+  Label: NonCancer
+  Image size: (256, 256)
+
+============================================================
+STEP 5: Saving balanced dataset
+============================================================
+✅ Saved balanced dataset to: /hpcstor6/scratch01/e/edward.gaibor001/omamadata256/hf_arrow_balanced
+
+📊 Summary:
+  Original: 154,238 NonCancer, 7,351 Cancer (imbalanced 21.0:1)
+  Balanced: 7,351 NonCancer, 7,351 Cancer (balanced 1:1)
+  Train:    11,760 samples (50/50 split)
+  Val:      2,942 samples (50/50 split)
+
+💡 Next step:
+  Run: python 3-processor.py (update ARROW_DIR to use balanced dataset)
+
+Reload later with:
+  from datasets import load_from_disk
+  dataset = load_from_disk("/hpcstor6/scratch01/e/edward.gaibor001/omamadata256/hf_arrow_balanced")
+============================================================
+
+
+==============================================
+✅ Step 1 Complete
+End time: Fri 17 Oct 2025 05:21:26 PM EDT
+==============================================
+
+📋 Next step:
+  sbatch run/2-process-data.slurm
+==============================================

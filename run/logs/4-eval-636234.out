@@ -1,0 +1,317 @@
+==============================================
+Step 4: Evaluate Balanced Model
+==============================================
+Job ID: 636234
+Node: chimera21
+GPUs: 0
+Start time: Fri Oct 17 11:27:59 PM EDT 2025
+==============================================
+
+============================================================
+📊 LABEL DISTRIBUTION VERIFICATION
+============================================================
+  NonCancer: 1,471 samples (50.0%)
+  Cancer: 1,471 samples (50.0%)
+  Total: 2,942 samples
+============================================================
+
+
+============================================================
+🔵 LOADING BASELINE MODEL
+============================================================
+Eval set: 2942 samples
+Using lenient parser (DataCamp-style)
+============================================================
+
+Running baseline inference with debug logging...
+
+🔵 BASELINE MODEL EVALUATION 🔵
+
+============================================================
+DETAILED EVALUATION METRICS
+============================================================
+
+📊 Overall Performance:
+  Accuracy:  91.60%
+  F1-Score:  0.9155
+  Invalid predictions: 0/2942 (0.00%)
+
+🎯 Confusion Matrix:
+                 Predicted
+               NonCancer  Cancer
+  Actual NonC     1467        4
+         Cancer    243     1228
+
+🔬 Per-Class Performance:
+  NonCancer:
+    Precision: 85.79%  (When model says NonCancer, correct 85.8% of time)
+    Recall:    99.73%  (Catches 99.7% of actual NonCancer cases)
+    F1-Score:  0.9224
+    Support:   1471 samples
+
+  Cancer:
+    Precision: 99.68%  (When model says Cancer, correct 99.7% of time)
+    Recall:    83.48%  (Catches 83.5% of actual Cancer cases) ⚠️ CRITICAL
+    F1-Score:  0.9086
+    Support:   1471 samples
+
+🏥 Medical AI Metrics:
+  Sensitivity (Cancer Recall): 83.48%  ← How many cancers detected
+  Specificity (NonC Recall):   99.73%  ← How many non-cancers correct
+  PPV (Cancer Precision):      99.68%  ← Positive result reliability
+  NPV (NonCancer Precision):   85.79%  ← Negative result reliability
+
+⚠️  Error Analysis:
+  False Positive Rate: 0.27%  (4 false alarms)
+  False Negative Rate: 16.52%  (243 missed cancers) ⚠️ CRITICAL
+
+💡 Clinical Interpretation:
+  ❌ Poor: Missing >15% of cancer cases - needs improvement
+  ✅ Low false alarm rate (<10%)
+============================================================
+
+
+============================================================
+🔍 RAW OUTPUT ANALYSIS (Sample)
+============================================================
+
+📌 Correct NonCancer (1467 total):
+  [1] Sample 0: True=NonCancer, Pred=NonCancer
+      Output: 'Based on the image, it appears to be a non-cancerous mammogram. The density of the breast tissue and the absence of any obvious masses or calcifications suggest a normal finding. However,'
+  [2] Sample 1: True=NonCancer, Pred=NonCancer
+      Output: 'Based on the image, it appears to be a normal mammogram. There are no obvious signs of cancer.\n'
+  [3] Sample 4: True=NonCancer, Pred=NonCancer
+      Output: 'Based on the image, it appears to be a normal mammogram. There are no obvious signs of cancer.\n'
+  [4] Sample 6: True=NonCancer, Pred=NonCancer
+      Output: 'Based on the image, it appears to be a normal mammogram. There are no obvious signs of cancer.\n'
+  [5] Sample 9: True=NonCancer, Pred=NonCancer
+      Output: 'Based on the image, it appears to be a normal mammogram. There are no obvious signs of cancer.\n'
+
+📌 Correct Cancer (1228 total):
+  [1] Sample 3: True=Cancer, Pred=Cancer
+      Output: 'Based on the image, the classification is **B: Cancer**.\n\nThe presence of a suspicious mass or lesion within the breast tissue is a strong indicator of cancer. While a definitive diagnosis requires a '
+  [2] Sample 5: True=Cancer, Pred=Cancer
+      Output: 'Based on the image, the presence of a large, dense mass in the breast tissue suggests a high likelihood of malignancy. Therefore, the classification is **B: Cancer**.\n'
+  [3] Sample 7: True=Cancer, Pred=Cancer
+      Output: 'Based on the image, there appears to be a suspicious lesion in the breast tissue. This could be a sign of cancer, and further investigation is needed to determine the exact nature of the lesion.\n'
+  [4] Sample 8: True=Cancer, Pred=Cancer
+      Output: 'Based on the image, it appears to show a mammogram with a suspicious area. While I cannot definitively diagnose cancer, the presence of a suspicious area warrants further investigation.\n'
+  [5] Sample 10: True=Cancer, Pred=Cancer
+      Output: 'Based on the image, the presence of multiple small, round, dense nodules within the breast tissue, particularly in the upper outer quadrant, is suggestive of a malignancy. Therefore, the classificatio'
+
+📌 Incorrect NonCancer (243 total):
+  [1] Sample 2: True=Cancer, Pred=NonCancer
+      Output: 'Based on the image, there appears to be a suspicious mass or lesion present. This warrants further investigation and a definitive diagnosis by a radiologist.\n'
+  [2] Sample 15: True=Cancer, Pred=NonCancer
+      Output: 'Based on the image, it appears to be a mammogram showing a suspicious area. While I cannot provide a definitive diagnosis, the presence of a potential abnormality warrants further investigation by a q'
+  [3] Sample 17: True=Cancer, Pred=NonCancer
+      Output: 'Based on the image, the mammogram appears to show a suspicious area. While I cannot provide a definitive diagnosis, the presence of a potential mass or abnormality warrants further investigation.\n\nThe'
+  [4] Sample 23: True=Cancer, Pred=NonCancer
+      Output: 'Based on the image, it appears to show a suspicious area. While I cannot provide a definitive diagnosis, the presence of a potential mass or abnormality warrants further investigation.\n'
+  [5] Sample 29: True=Cancer, Pred=NonCancer
+      Output: 'Based on the image, there appears to be a suspicious mass in the breast. This warrants further investigation and a definitive diagnosis.\n'
+
+📌 Incorrect Cancer (4 total):
+  [1] Sample 615: True=NonCancer, Pred=Cancer
+      Output: 'Based on the image, the dominant feature is a large, dense mass in the upper right breast. This is highly suggestive of a cancerous lesion.\n\nTherefore, the classification is **B: Cancer**.'
+  [2] Sample 1850: True=NonCancer, Pred=Cancer
+      Output: 'Based on the image, the dominant feature is a large, dense, and irregular mass in the breast. This is highly suggestive of a malignant (cancerous) process.\n\nTherefore, the classification is'
+  [3] Sample 1964: True=NonCancer, Pred=Cancer
+      Output: 'Based on the image, the dominant feature is a large, irregular mass in the breast tissue. This is highly suggestive of a malignant (cancerous) process.\n\nTherefore, the classification is **B'
+  [4] Sample 2055: True=NonCancer, Pred=Cancer
+      Output: "Based on the image, it appears to be a mammogram showing a breast. The image doesn't show any obvious signs of cancer, such as a mass, calcifications, or asymmetry. Therefore"
+
+📌 Invalid (0 total):
+============================================================
+
+
+============================================================
+🟢 LOADING FINE-TUNED MODEL
+============================================================
+============================================================
+
+Running fine-tuned inference with debug logging...
+
+🟢 FINE-TUNED MODEL EVALUATION 🟢
+
+============================================================
+DETAILED EVALUATION METRICS
+============================================================
+
+📊 Overall Performance:
+  Accuracy:  98.88%
+  F1-Score:  0.9888
+  Invalid predictions: 0/2942 (0.00%)
+
+🎯 Confusion Matrix:
+                 Predicted
+               NonCancer  Cancer
+  Actual NonC     1443       28
+         Cancer      5     1466
+
+🔬 Per-Class Performance:
+  NonCancer:
+    Precision: 99.65%  (When model says NonCancer, correct 99.7% of time)
+    Recall:    98.10%  (Catches 98.1% of actual NonCancer cases)
+    F1-Score:  0.9887
+    Support:   1471 samples
+
+  Cancer:
+    Precision: 98.13%  (When model says Cancer, correct 98.1% of time)
+    Recall:    99.66%  (Catches 99.7% of actual Cancer cases) ⚠️ CRITICAL
+    F1-Score:  0.9889
+    Support:   1471 samples
+
+🏥 Medical AI Metrics:
+  Sensitivity (Cancer Recall): 99.66%  ← How many cancers detected
+  Specificity (NonC Recall):   98.10%  ← How many non-cancers correct
+  PPV (Cancer Precision):      98.13%  ← Positive result reliability
+  NPV (NonCancer Precision):   99.65%  ← Negative result reliability
+
+⚠️  Error Analysis:
+  False Positive Rate: 1.90%  (28 false alarms)
+  False Negative Rate: 0.34%  (5 missed cancers) ⚠️ CRITICAL
+
+💡 Clinical Interpretation:
+  ✅ Excellent: Missing <5% of cancer cases
+  ✅ Low false alarm rate (<10%)
+============================================================
+
+
+============================================================
+🔍 RAW OUTPUT ANALYSIS (Sample)
+============================================================
+
+📌 Correct NonCancer (1443 total):
+  [1] Sample 0: True=NonCancer, Pred=NonCancer
+      Output: 'A: NonCancer'
+  [2] Sample 1: True=NonCancer, Pred=NonCancer
+      Output: 'A: NonCancer'
+  [3] Sample 4: True=NonCancer, Pred=NonCancer
+      Output: 'A: NonCancer'
+  [4] Sample 6: True=NonCancer, Pred=NonCancer
+      Output: 'A: NonCancer'
+  [5] Sample 9: True=NonCancer, Pred=NonCancer
+      Output: 'A: NonCancer'
+
+📌 Correct Cancer (1466 total):
+  [1] Sample 2: True=Cancer, Pred=Cancer
+      Output: 'B: Cancer'
+  [2] Sample 3: True=Cancer, Pred=Cancer
+      Output: 'B: Cancer'
+  [3] Sample 5: True=Cancer, Pred=Cancer
+      Output: 'B: Cancer'
+  [4] Sample 7: True=Cancer, Pred=Cancer
+      Output: 'B: Cancer'
+  [5] Sample 8: True=Cancer, Pred=Cancer
+      Output: 'B: Cancer'
+
+📌 Incorrect NonCancer (5 total):
+  [1] Sample 374: True=Cancer, Pred=NonCancer
+      Output: 'A: NonCancer'
+  [2] Sample 1318: True=Cancer, Pred=NonCancer
+      Output: 'A: NonCancer'
+  [3] Sample 1971: True=Cancer, Pred=NonCancer
+      Output: 'A: NonCancer'
+  [4] Sample 2113: True=Cancer, Pred=NonCancer
+      Output: 'A: NonCancer'
+  [5] Sample 2198: True=Cancer, Pred=NonCancer
+      Output: 'A: NonCancer'
+
+📌 Incorrect Cancer (28 total):
+  [1] Sample 44: True=NonCancer, Pred=Cancer
+      Output: 'B: Cancer'
+  [2] Sample 250: True=NonCancer, Pred=Cancer
+      Output: 'B: Cancer'
+  [3] Sample 513: True=NonCancer, Pred=Cancer
+      Output: 'B: Cancer'
+  [4] Sample 706: True=NonCancer, Pred=Cancer
+      Output: 'B: Cancer'
+  [5] Sample 849: True=NonCancer, Pred=Cancer
+      Output: 'B: Cancer'
+
+📌 Invalid (0 total):
+============================================================
+
+
+============================================================
+💾 SAVING DEBUG LOGS
+============================================================
+Baseline debug log saved to: /hpcstor6/scratch01/e/edward.gaibor001/medgemma_runs/evaluation_debug_baseline.jsonl
+  Total entries: 2942
+Fine-tuned debug log saved to: /hpcstor6/scratch01/e/edward.gaibor001/medgemma_runs/evaluation_debug_finetuned.jsonl
+  Total entries: 2942
+
+📊 Debug Log Summary:
+
+Baseline parser reasons:
+  negation_detected: no\s+(?:obvious\s+)?(?:signs?\s+of\s+)?cancer: 1105 (37.6%)
+  matched_pattern_b_cancer: 896 (30.5%)
+  substring_cancer_generic: 297 (10.1%)
+  matched_letter_a: 249 (8.5%)
+  negation_detected: non-?cancerous: 199 (6.8%)
+  matched_pattern_a_noncancer: 130 (4.4%)
+  positive_cancer_pattern: (?:suggests?|indicates?)\s+(?:\w+\s+){0,3}(?:malignancy|cancer): 22 (0.7%)
+  substring_noncancer: 19 (0.6%)
+  positive_cancer_pattern: (?:suspicious|possible|probable|likely)\s+(?:\w+\s+){0,3}cancer: 14 (0.5%)
+  negation_detected: absence\s+of.*(?:masses|cancer): 4 (0.1%)
+  matched_letter_b: 3 (0.1%)
+  negation_detected: benign: 2 (0.1%)
+  negation_detected: normal\s+finding: 1 (0.0%)
+  negation_detected: normal.*no.*cancer: 1 (0.0%)
+
+Fine-tuned parser reasons:
+  matched_pattern_b_cancer: 1494 (50.8%)
+  matched_pattern_a_noncancer: 1448 (49.2%)
+============================================================
+
+
+============================================================
+📈 IMPROVEMENT SUMMARY (Baseline → Fine-tuned)
+============================================================
+
+Overall:
+  Accuracy:     📈 ++7.27% (91.60% → 98.88%)
+  F1-Score:     📈 ++0.0733 (0.9155 → 0.9888)
+
+Cancer Detection (Most Critical):
+  Sensitivity:  📈 ++16.18% (83.48% → 99.66%)
+  Precision:    📉 -1.55% (99.68% → 98.13%)
+  F1-Score:     📈 ++0.0803 (0.9086 → 0.9889)
+
+Error Rates (Lower is Better):
+  False Negatives: 📈 ++16.18% (16.52% → 0.34%)
+  False Positives: 📉 -1.63% (0.27% → 1.90%)
+
+Prediction Quality:
+  Invalid preds (baseline):    0/2942 (0.00%)
+  Invalid preds (fine-tuned):  0/2942 (0.00%)
+
+💡 Overall Assessment:
+  ✅ GOOD improvement. Fine-tuning was beneficial.
+============================================================
+
+📁 Results saved to: /hpcstor6/scratch01/e/edward.gaibor001/medgemma_runs/final_evaluation_results_20251017_233525.json
+
+✅ Final evaluation complete!
+
+📝 Next steps:
+  1. Review confusion matrix - should see Cancer predictions now
+  2. Check sensitivity - target >85% for medical AI
+  3. Analyze debug logs to understand model behavior:
+     - /hpcstor6/scratch01/e/edward.gaibor001/medgemma_runs/evaluation_debug_baseline.jsonl
+     - /hpcstor6/scratch01/e/edward.gaibor001/medgemma_runs/evaluation_debug_finetuned.jsonl
+  4. If sensitivity still low, investigate training data quality
+
+
+==============================================
+✅ Step 4 Complete
+End time: Fri Oct 17 11:35:28 PM EDT 2025
+==============================================
+
+Expected Results:
+  ✅ Sensitivity: 75-85% (vs 16% original)
+  ✅ Specificity: 85-95%
+  ✅ Overall accuracy: 88-92%
+  ✅ Balanced predictions across classes
+==============================================

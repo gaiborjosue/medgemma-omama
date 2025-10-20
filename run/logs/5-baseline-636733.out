@@ -1,0 +1,499 @@
+==============================================
+Step 5: Baseline Prompt Comparison
+==============================================
+Job ID: 636733
+Node: chimera21
+GPUs: 0
+Start time: Sun Oct 19 08:11:01 PM EDT 2025
+==============================================
+
+Testing 7 different prompts:
+  1. original
+  2. constrained
+  3. few_shot
+  4. role_based
+  5. ultra_strict
+  6. medical_context
+  7. binary_choice
+==============================================
+
+============================================================
+📊 DATASET DISTRIBUTION
+============================================================
+  NonCancer: 1,471 samples (50.0%)
+  Cancer: 1,471 samples (50.0%)
+  Total: 2,942 samples
+============================================================
+
+
+============================================================
+🔵 LOADING BASELINE MODEL
+============================================================
+Model loaded. Eval set: 2942 samples
+============================================================
+
+
+================================================================================
+🧪 TESTING PROMPT: ORIGINAL
+================================================================================
+
+Prompt text:
+------------------------------------------------------------
+Classify this mammogram.
+A: NonCancer
+B: Cancer
+------------------------------------------------------------
+
+
+============================================================
+PROMPT: ORIGINAL
+============================================================
+
+📊 Performance:
+  Accuracy:    51.84%
+  Sensitivity: 10.81%  ← Cancer detection
+  Specificity: 92.86%  ← NonCancer detection
+  F1-Score:    0.4209
+  Invalid:     0/2942 (0.00%)
+
+🎯 Confusion Matrix:
+               NonCancer  Cancer
+  Actual NonC     1366      105
+         Cancer   1312      159
+
+⚠️  Error Analysis:
+  False Positive Rate: 7.14%  (105 false alarms)
+  False Negative Rate: 89.19%  (1312 missed cancers)
+
+💡 Assessment:
+  ❌ POOR: Sensitivity <60% - not suitable for screening
+============================================================
+
+
+============================================================
+SAMPLE OUTPUTS - ORIGINAL
+============================================================
+
+✅ Correct NonCancer predictions (1366 total):
+  [1] 'Based on the image, the classification is **A: NonCancer**.\n\nThe image shows a mammogram with a clear breast tissue pattern. There are no obvious sign'
+  [2] "Based on the image, it appears to be a **A: NonCancer** mammogram.\n\nHere's why:\n\n*   **No obvious masses or calcifications:** The image doesn'"
+  [3] 'Based on the image, the classification is **A: NonCancer**.\n\nThe image shows a typical mammogram with no obvious signs of cancer. The breast tissue ap'
+
+✅ Correct Cancer predictions (159 total):
+  [1] 'Based on the image, the classification is **B: Cancer**.\n\nThe presence of a large, dense mass in the breast tissue is a strong indicator of malignancy'
+  [2] 'Based on the image, the classification is **B: Cancer**.\n\nThe presence of a large, dense opacity in the left breast suggests a possible mass or lesion'
+  [3] 'Based on the image, it is difficult to definitively classify it as either "Non-Cancer" or "Cancer" without a radiologist\'s interpretation. However, I '
+============================================================
+
+
+================================================================================
+🧪 TESTING PROMPT: CONSTRAINED
+================================================================================
+
+Prompt text:
+------------------------------------------------------------
+You are an expert radiologist analyzing a mammogram.
+
+Classify this image as ONE of the following:
+A: NonCancer
+B: Cancer
+
+Respond with ONLY the letter and label (e.g., "A: NonCancer" or "B: Cancer").
+Do NOT add explanations or additional text.
+
+Your classification:
+------------------------------------------------------------
+
+
+============================================================
+PROMPT: CONSTRAINED
+============================================================
+
+📊 Performance:
+  Accuracy:    54.11%
+  Sensitivity: 19.65%  ← Cancer detection
+  Specificity: 88.58%  ← NonCancer detection
+  F1-Score:    0.4793
+  Invalid:     0/2942 (0.00%)
+
+🎯 Confusion Matrix:
+               NonCancer  Cancer
+  Actual NonC     1303      168
+         Cancer   1182      289
+
+⚠️  Error Analysis:
+  False Positive Rate: 11.42%  (168 false alarms)
+  False Negative Rate: 80.35%  (1182 missed cancers)
+
+💡 Assessment:
+  ❌ POOR: Sensitivity <60% - not suitable for screening
+============================================================
+
+
+============================================================
+SAMPLE OUTPUTS - CONSTRAINED
+============================================================
+
+✅ Correct NonCancer predictions (1303 total):
+  [1] 'A: NonCancer\n'
+  [2] 'A: NonCancer\n'
+  [3] 'A: NonCancer\n'
+
+✅ Correct Cancer predictions (289 total):
+  [1] 'B: Cancer\n'
+  [2] 'B: Cancer\n'
+  [3] 'B: Cancer\n'
+============================================================
+
+
+================================================================================
+🧪 TESTING PROMPT: FEW_SHOT
+================================================================================
+
+Prompt text:
+------------------------------------------------------------
+Classify this mammogram image.
+
+Examples of correct responses:
+- If normal tissue: "A: NonCancer"
+- If suspicious mass detected: "B: Cancer"
+- If calcifications concerning: "B: Cancer"
+- If dense but normal: "A: NonCancer"
+
+Your classification for this image:
+------------------------------------------------------------
+
+
+============================================================
+PROMPT: FEW_SHOT
+============================================================
+
+📊 Performance:
+  Accuracy:    53.91%
+  Sensitivity: 17.54%  ← Cancer detection
+  Specificity: 90.28%  ← NonCancer detection
+  F1-Score:    0.4688
+  Invalid:     0/2942 (0.00%)
+
+🎯 Confusion Matrix:
+               NonCancer  Cancer
+  Actual NonC     1328      143
+         Cancer   1213      258
+
+⚠️  Error Analysis:
+  False Positive Rate: 9.72%  (143 false alarms)
+  False Negative Rate: 82.46%  (1213 missed cancers)
+
+💡 Assessment:
+  ❌ POOR: Sensitivity <60% - not suitable for screening
+============================================================
+
+
+============================================================
+SAMPLE OUTPUTS - FEW_SHOT
+============================================================
+
+✅ Correct NonCancer predictions (1328 total):
+  [1] 'Based on the image, the most likely classification is **A: NonCancer**.\n\nThe image shows a breast with a clear outline and no obvious signs of maligna'
+  [2] 'A: NonCancer\n'
+  [3] 'A: NonCancer\n'
+
+✅ Correct Cancer predictions (258 total):
+  [1] 'B: Cancer\n'
+  [2] 'B: Cancer\n'
+  [3] 'Based on the image, the most likely classification is **B: Cancer**.\n\nThe presence of a large, round, and dense mass in the breast tissue is highly su'
+============================================================
+
+
+================================================================================
+🧪 TESTING PROMPT: ROLE_BASED
+================================================================================
+
+Prompt text:
+------------------------------------------------------------
+You are an expert radiologist with 20 years of experience in mammography screening.
+
+Task: Classify this mammogram as NonCancer or Cancer.
+
+Instructions:
+1. Analyze the image for masses, calcifications, architectural distortion
+2. Respond with EXACTLY: "A: NonCancer" or "B: Cancer"
+3. Do not include explanations
+
+Classification:
+------------------------------------------------------------
+
+
+============================================================
+PROMPT: ROLE_BASED
+============================================================
+
+📊 Performance:
+  Accuracy:    53.57%
+  Sensitivity: 19.10%  ← Cancer detection
+  Specificity: 88.04%  ← NonCancer detection
+  F1-Score:    0.4731
+  Invalid:     0/2942 (0.00%)
+
+🎯 Confusion Matrix:
+               NonCancer  Cancer
+  Actual NonC     1295      176
+         Cancer   1190      281
+
+⚠️  Error Analysis:
+  False Positive Rate: 11.96%  (176 false alarms)
+  False Negative Rate: 80.90%  (1190 missed cancers)
+
+💡 Assessment:
+  ❌ POOR: Sensitivity <60% - not suitable for screening
+============================================================
+
+
+============================================================
+SAMPLE OUTPUTS - ROLE_BASED
+============================================================
+
+✅ Correct NonCancer predictions (1295 total):
+  [1] 'A: NonCancer\n'
+  [2] 'A: NonCancer\n'
+  [3] 'A: NonCancer\n'
+
+✅ Correct Cancer predictions (281 total):
+  [1] 'B: Cancer\n'
+  [2] 'B: Cancer\n'
+  [3] 'B: Cancer\n'
+============================================================
+
+
+================================================================================
+🧪 TESTING PROMPT: ULTRA_STRICT
+================================================================================
+
+Prompt text:
+------------------------------------------------------------
+Classify this mammogram.
+
+Answer format (choose one):
+A: NonCancer
+B: Cancer
+
+Answer:
+------------------------------------------------------------
+
+
+============================================================
+PROMPT: ULTRA_STRICT
+============================================================
+
+📊 Performance:
+  Accuracy:    51.80%
+  Sensitivity: 10.06%  ← Cancer detection
+  Specificity: 93.54%  ← NonCancer detection
+  F1-Score:    0.4163
+  Invalid:     0/2942 (0.00%)
+
+🎯 Confusion Matrix:
+               NonCancer  Cancer
+  Actual NonC     1376       95
+         Cancer   1323      148
+
+⚠️  Error Analysis:
+  False Positive Rate: 6.46%  (95 false alarms)
+  False Negative Rate: 89.94%  (1323 missed cancers)
+
+💡 Assessment:
+  ❌ POOR: Sensitivity <60% - not suitable for screening
+============================================================
+
+
+============================================================
+SAMPLE OUTPUTS - ULTRA_STRICT
+============================================================
+
+✅ Correct NonCancer predictions (1376 total):
+  [1] 'A: NonCancer\n'
+  [2] 'A: NonCancer\n'
+  [3] 'A: NonCancer\n'
+
+✅ Correct Cancer predictions (148 total):
+  [1] 'B\n'
+  [2] 'B\n'
+  [3] 'Based on the image, the most likely classification is **B: Cancer**.\n\nThe presence of a large, dense opacity in the breast tissue suggests a possible '
+============================================================
+
+
+================================================================================
+🧪 TESTING PROMPT: MEDICAL_CONTEXT
+================================================================================
+
+Prompt text:
+------------------------------------------------------------
+Medical context: You are reviewing a screening mammogram.
+
+Question: Does this mammogram show signs of malignancy?
+
+Options:
+A: NonCancer (benign/normal findings)
+B: Cancer (malignant/suspicious findings)
+
+Your answer (format "X: Label"):
+------------------------------------------------------------
+
+
+============================================================
+PROMPT: MEDICAL_CONTEXT
+============================================================
+
+📊 Performance:
+  Accuracy:    54.55%
+  Sensitivity: 22.03%  ← Cancer detection
+  Specificity: 87.08%  ← NonCancer detection
+  F1-Score:    0.4918
+  Invalid:     0/2942 (0.00%)
+
+🎯 Confusion Matrix:
+               NonCancer  Cancer
+  Actual NonC     1281      190
+         Cancer   1147      324
+
+⚠️  Error Analysis:
+  False Positive Rate: 12.92%  (190 false alarms)
+  False Negative Rate: 77.97%  (1147 missed cancers)
+
+💡 Assessment:
+  ❌ POOR: Sensitivity <60% - not suitable for screening
+============================================================
+
+
+============================================================
+SAMPLE OUTPUTS - MEDICAL_CONTEXT
+============================================================
+
+✅ Correct NonCancer predictions (1281 total):
+  [1] 'A: NonCancer (benign/normal findings)\n'
+  [2] 'A: NonCancer (benign/normal findings)\n'
+  [3] 'A: NonCancer (benign/normal findings)\n'
+
+✅ Correct Cancer predictions (324 total):
+  [1] 'B: Cancer (malignant/suspicious findings)\n'
+  [2] 'B: Cancer (malignant/suspicious findings)\n'
+  [3] 'B: Cancer (malignant/suspicious findings)\n'
+============================================================
+
+
+================================================================================
+🧪 TESTING PROMPT: BINARY_CHOICE
+================================================================================
+
+Prompt text:
+------------------------------------------------------------
+Analyze this mammogram and select the correct classification:
+
+[ ] A: NonCancer
+[ ] B: Cancer
+
+Selected (format "X: Label"):
+------------------------------------------------------------
+
+
+============================================================
+PROMPT: BINARY_CHOICE
+============================================================
+
+📊 Performance:
+  Accuracy:    52.65%
+  Sensitivity: 14.89%  ← Cancer detection
+  Specificity: 90.41%  ← NonCancer detection
+  F1-Score:    0.4478
+  Invalid:     0/2942 (0.00%)
+
+🎯 Confusion Matrix:
+               NonCancer  Cancer
+  Actual NonC     1330      141
+         Cancer   1252      219
+
+⚠️  Error Analysis:
+  False Positive Rate: 9.59%  (141 false alarms)
+  False Negative Rate: 85.11%  (1252 missed cancers)
+
+💡 Assessment:
+  ❌ POOR: Sensitivity <60% - not suitable for screening
+============================================================
+
+
+============================================================
+SAMPLE OUTPUTS - BINARY_CHOICE
+============================================================
+
+✅ Correct NonCancer predictions (1330 total):
+  [1] 'Based on the image, the most likely classification is:\n\n**A: NonCancer**\n\nThe image shows a mammogram. While I cannot definitively diagnose without a '
+  [2] 'A: NonCancer\n'
+  [3] 'A: NonCancer\n'
+
+✅ Correct Cancer predictions (219 total):
+  [1] 'B: Cancer\n'
+  [2] 'B: Cancer\n'
+  [3] 'B: Cancer\n'
+============================================================
+
+
+================================================================================
+📊 PROMPT COMPARISON SUMMARY
+================================================================================
+
+Prompt               Accuracy     Sensitivity  Specificity  Invalid%  
+--------------------------------------------------------------------------------
+medical_context          54.55%      22.03%      87.08%     0.00%
+constrained              54.11%      19.65%      88.58%     0.00%
+role_based               53.57%      19.10%      88.04%     0.00%
+few_shot                 53.91%      17.54%      90.28%     0.00%
+binary_choice            52.65%      14.89%      90.41%     0.00%
+original                 51.84%      10.81%      92.86%     0.00%
+ultra_strict             51.80%      10.06%      93.54%     0.00%
+
+================================================================================
+🏆 BEST PROMPT: MEDICAL_CONTEXT
+================================================================================
+  Accuracy:    54.55%
+  Sensitivity: 22.03%  ← Cancer detection
+  Specificity: 87.08%  ← NonCancer detection
+  F1-Score:    0.4918
+  Invalid:     0.00%
+
+💡 Recommendation:
+  ⚠️  All prompts show suboptimal performance.
+  ⚠️  Fine-tuning may still be necessary for clinical deployment.
+
+📝 Best prompt text:
+--------------------------------------------------------------------------------
+Medical context: You are reviewing a screening mammogram.
+
+Question: Does this mammogram show signs of malignancy?
+
+Options:
+A: NonCancer (benign/normal findings)
+B: Cancer (malignant/suspicious findings)
+
+Your answer (format "X: Label"):
+--------------------------------------------------------------------------------
+
+📁 Results saved to: /hpcstor6/scratch01/e/edward.gaibor001/medgemma_runs/baseline_prompt_comparison_20251019_203412.json
+   Debug log: /hpcstor6/scratch01/e/edward.gaibor001/medgemma_runs/baseline_prompt_evaluation_debug_original.jsonl
+   Debug log: /hpcstor6/scratch01/e/edward.gaibor001/medgemma_runs/baseline_prompt_evaluation_debug_constrained.jsonl
+   Debug log: /hpcstor6/scratch01/e/edward.gaibor001/medgemma_runs/baseline_prompt_evaluation_debug_few_shot.jsonl
+   Debug log: /hpcstor6/scratch01/e/edward.gaibor001/medgemma_runs/baseline_prompt_evaluation_debug_role_based.jsonl
+   Debug log: /hpcstor6/scratch01/e/edward.gaibor001/medgemma_runs/baseline_prompt_evaluation_debug_ultra_strict.jsonl
+   Debug log: /hpcstor6/scratch01/e/edward.gaibor001/medgemma_runs/baseline_prompt_evaluation_debug_medical_context.jsonl
+   Debug log: /hpcstor6/scratch01/e/edward.gaibor001/medgemma_runs/baseline_prompt_evaluation_debug_binary_choice.jsonl
+
+✅ Baseline prompt evaluation complete!
+
+
+==============================================
+✅ Step 5 Complete
+End time: Sun Oct 19 08:34:14 PM EDT 2025
+==============================================
+
+Results saved in:
+  /hpcstor6/scratch01/e/edward.gaibor001/medgemma_runs/baseline_prompt_comparison/
+==============================================
