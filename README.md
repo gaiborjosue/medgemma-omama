@@ -37,9 +37,19 @@ sbatch run/5-baseline-comparison.slurm
 - **Sensitivity**: 99.66%
 - **Specificity**: 98.10%
 
-## ⚙️ Requirements
+## ⚙️ Setup
 
-- Conda env: `medgemma`
+### 1. Clone Environment
+```bash
+# Create conda environment from file
+conda env create -f environment.yml
+
+# Activate environment
+conda activate medgemma
+```
+
+### 2. Set HuggingFace Token
+
 
 ## 📁 Key Directories
 
