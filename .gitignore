@@ -5,6 +5,9 @@ run/logs/6-merge-push-*.err
 run/logs/6-merge-push-*.out
 run/submit-step6.sh
 
+# Ignore files with tokens/secrets
+run/train_2mig_h200.slurm
+
 # Python cache
 __pycache__/
 *.py[cod]
